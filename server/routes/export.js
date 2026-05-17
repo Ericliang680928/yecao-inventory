@@ -7,6 +7,14 @@ const { requireAuth } = require('../middleware/auth');
 const router = express.Router();
 
 // ─────────────────────────────────────────────────────────────
+//  Diagnostic ping (no auth) — confirms router is reachable
+// ─────────────────────────────────────────────────────────────
+router.get('/ping', (req, res) => {
+  console.log('[export] ping OK');
+  res.json({ ok: true, ts: Date.now() });
+});
+
+// ─────────────────────────────────────────────────────────────
 //  Timeout 包裝：超過 ms 就 reject
 // ─────────────────────────────────────────────────────────────
 function withTimeout(promise, ms, label) {
@@ -26,7 +34,7 @@ async function getExportData(batchId) {
       sheets.getBatchById(batchId),
       sheets.getBatchItems(batchId),
     ]),
-    25000,
+    22000,
     'getExportData'
   );
   console.log(`[export] getExportData done batch=${!!batch} items=${items?.length}`);
@@ -156,21 +164,4 @@ router.get('/:batchId/excel', requireAuth, async (req, res) => {
 //  POST /api/export/:batchId/gsheet  →  寫入 Google Sheets 新分頁
 // ─────────────────────────────────────────────────────────────
 router.post('/:batchId/gsheet', requireAuth, async (req, res) => {
-  console.log(`[export] GSheet request batchId=${req.params.batchId}`);
-  try {
-    const { batch, items } = await getExportData(req.params.batchId);
-    console.log(`[export] writing to GSheet tab...`);
-    const result = await withTimeout(
-      sheets.exportBatchToNewTab(batch, items),
-      25000,
-      'exportBatchToNewTab'
-    );
-    console.log(`[export] GSheet done:`, result.tabTitle);
-    res.json(result);
-  } catch (e) {
-    console.error('[export] GSheet error:', e.message, e.stack);
-    if (!res.headersSent) res.status(e.status || 500).json({ error: e.message });
-  }
-});
-
-module.exports = router;
+  console.log(`[export] GSheet request batchId=${req.params.b
