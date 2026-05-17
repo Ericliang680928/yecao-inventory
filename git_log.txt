@@ -1,0 +1,16 @@
+=== git 初始化開始 ===
+
+工作目錄: D:\米樂家\野草\盤點系統
+存在: True
+[1] 清除舊 .git...
+警告：.git 未完全清除，嘗試繼續
+
+[2] git init -b main...
+$ git init -b main
+Initialized empty Git repository in D:/米樂家/野草/盤點系統/.git/
+
+[3] 寫入 git config...
+config 寫入成功
+config 內容驗證: '[core]\n\trepositoryformatversion = 0\n\tfilemode = fa'
+
+[4] git add...

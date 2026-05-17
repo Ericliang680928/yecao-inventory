@@ -1,0 +1,55 @@
+==================================================
+Railway 環境變數設定（複製貼到 Railway Variables）
+==================================================
+
+PORT=3001
+
+GOOGLE_SERVICE_ACCOUNT_EMAIL=yecao-inventory-496@yecao-inventory.iam.gserviceaccount.com
+
+GOOGLE_PRIVATE_KEY=-----BEGIN PRIVATE KEY-----
+MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDG0viIM86otlM1
+02xZUc4MROQvZ+pW4ZqZfnG6wiNzqo2NySA5DORqIyQ7YSGESA+QtxtFvalw1gH0
+Q59X76aSfsT0c6REoP9tdivcVhAMXYj2d/s3sa9Z0THOWwJUMaQnk6z9UoMk4GCL
+uhhwLJVqNeFfN1M6M0p0r4vHx9l20wWFEPZ+KzN26QLhGtYJJkhVbmeg4zXIqfg7
+813ro/o8sw3NyXN6BWtfi/jM31kR4EofH26KBOa8VVDdV9+J32MBAyukmzJk7FEo
+a5m8a2VGuGCBsVQtaZVIxkO52U7hDajltIF92+gl3C+u+qZnhc9CaFeKrYtQLdBy
+Y5Tb4EQhAgMBAAECggEAEQ2FPYFcB0JkDqjMkTif+JNsEtjR05PUA7hBnugJzGDj
+dTa76ci+SpArCmDBVCwuEZZy419qCgCA+GdYYl1upv/yepj0jOJWJhhNmL9U7wqS
+tbkCtfsqdASqRe2uXHRJhQ94dd2+28nW3gUfFXftdMecReNj4wkFKM7pqT/t2fAG
+mUFc7UEKMUZhqjqm3UiWlnyHEh4tpKdvQae0KQVQ2BbOSZKdP6AlCb7Q+7ZgwAlV
+k9y9WK808r91Z/9de6jqK3/yw0FISa2TFRTMLCNxUcXSZUqNTgsVQF7O0O9cQs4P
+EYo+aWru4VzdwXLWyLKZUmMhHOVMo2s2Oqt4f69W8QKBgQD3xwPtUHQxwM7ygx4I
+LEaYROHD/Ppgxbiu1I8mE+K4c05nyt7rb5yPo5i84KKb9qjY7ShIL9lmUar7eYbH
+cakBkMJEzksiFe3nD768/WPkfqywe2HDWQlnwa96vpszDvO5Rrcad4bZn2hIyhH9
+dOwHZQEvDKStacFLGlhz4ft5XQKBgQDNbBMKD7QGqUcnnK+9g/9v+0Z6E0CDogW9
+ZinipLl5pm6Dp4PLHYUcUeLOI45giwWimdXwaM9K815QfvianwDInwV0mtS1CoxW
+wY5WKwfNDpYKg7HGooiPvo7rmy7vCz5sEGyq2rs+JnVmQ9cGJpgMlzMrlpBVmerr
+jIXzsuYVlQKBgGhUQSAMr1A/uiO898lDM1psLo/Cln5m4pOi5r+GwgEedBYaAvEp
+ZsfIf8iP4YhAPOpSOZLjqut9WbxXeFvETQBevp4QKuyoRSr0o0CahRQyDm6lFQ4X
+EHHCySuq1FiUZCVQVErtpzc8+sEjbJ3HPJcEfZIdBb4K+Jux9SqeLa/1AoGANhqJ
+5TN/meWJzSASlVqns2m+BTb+3eyVkG3RCFWUWDsCjoBXUO7keTIEB4EL5deX01yr
+IVepiTcSFydp+Od6AF0Jxc1lyo0Nq2ftQjqxIkv+LqTC9OsoBpwM7nb/5IvUlAe7
+Z0CW4maksxuZDZCqqV5FZuyP9UvFuOZY/XeX7AUCgYBfmZylIFVcMupDYeqMpfU8
+vfRuRhgTNaqmUH2G1ufU/FY0L14RPKezf2FpnhzNieJh1vtHj59p+TiA5jIdzDpQ
+47nGtojw/ntIp+Vbr/Ez2BSq466frBAdhL4l4QVLmyq4CobRu5I59eswSpiMvQST
+58O0dFcDD2t9lT4X1XVgJA==
+-----END PRIVATE KEY-----
+
+SOURCE_SHEET_ID=1JOpCUfAS3YEHHGUq_NR8twxGzDh7C0_p7bZAdOc0tf0
+
+SOURCE_SHEET_NAME=產品名單
+
+INVENTORY_SHEET_ID=1xiSjlcbybKHsoF8nGsrwICQVGhdXe-PboAv26_t-HS4
+
+OWNER_EMAIL=ericliang680928@gmail.com
+
+JWT_SECRET=yc2026-inv-K9mP3qR7wL2nF8vB5tY1jE4hA6dN0s8x
+
+ADMIN_USERNAME=admin
+
+ADMIN_PASSWORD=Admin@1234
+
+==================================================
+注意：GOOGLE_PRIVATE_KEY 在 Railway 裡要整個貼入
+（包含 BEGIN / END 行），Railway 會自動保留換行。
+==================================================

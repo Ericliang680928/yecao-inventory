@@ -1,0 +1,24 @@
+# Dependencies
+node_modules/
+server/node_modules/
+
+# Build output (Railway 會重新 build)
+dist/
+*.tsbuildinfo
+
+# Environment & secrets
+server/.env
+server/.sheet_config.json
+*.env.local
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Temp
+*.tgz
+build_log.txt

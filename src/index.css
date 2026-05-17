@@ -1,0 +1,40 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html { -webkit-tap-highlight-color: transparent; }
+  body { @apply bg-gray-50 text-gray-900 antialiased; }
+  input, button, select, textarea { @apply outline-none; }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-primary-600 text-white font-semibold px-5 py-3 rounded-xl
+           active:bg-primary-700 disabled:opacity-40 disabled:cursor-not-allowed
+           transition-colors touch-manipulation select-none;
+  }
+  .btn-secondary {
+    @apply bg-white text-gray-700 font-semibold px-5 py-3 rounded-xl border border-gray-300
+           active:bg-gray-100 disabled:opacity-40
+           transition-colors touch-manipulation select-none;
+  }
+  .btn-danger {
+    @apply bg-red-600 text-white font-semibold px-5 py-3 rounded-xl
+           active:bg-red-700 disabled:opacity-40
+           transition-colors touch-manipulation select-none;
+  }
+  .card {
+    @apply bg-white rounded-2xl shadow-sm border border-gray-100 p-4;
+  }
+  .input-field {
+    @apply w-full border border-gray-300 rounded-xl px-4 py-3 text-base
+           focus:border-primary-500 focus:ring-2 focus:ring-primary-100
+           transition-colors;
+  }
+  .badge-uncounted  { @apply bg-gray-100 text-gray-600; }
+  .badge-counted    { @apply bg-green-100 text-green-700; }
+  .badge-diff       { @apply bg-amber-100 text-amber-700; }
+  .badge-reviewed   { @apply bg-blue-100 text-blue-700; }
+  .badge-closed     { @apply bg-purple-100 text-purple-700; }
+}
