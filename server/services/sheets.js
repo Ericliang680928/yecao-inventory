@@ -719,7 +719,6 @@ async function exportBatchToNewTab(batch, items) {
   };
 }
 
-
 module.exports = {
   initSheets,
   // 使用者
