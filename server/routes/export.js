@@ -164,4 +164,21 @@ router.get('/:batchId/excel', requireAuth, async (req, res) => {
 //  POST /api/export/:batchId/gsheet  →  寫入 Google Sheets 新分頁
 // ─────────────────────────────────────────────────────────────
 router.post('/:batchId/gsheet', requireAuth, async (req, res) => {
-  console.log(`[export] GSheet request batchId=${req.params.b
+  console.log(`[export] GSheet request batchId=${req.params.batchId}`);
+  try {
+    const { batch, items } = await getExportData(req.params.batchId);
+    console.log(`[export] writing to GSheet tab...`);
+    const result = await withTimeout(
+      sheets.exportBatchToNewTab(batch, items),
+      22000,
+      'exportBatchToNewTab'
+    );
+    console.log(`[export] GSheet done:`, result.tabTitle);
+    res.json(result);
+  } catch (e) {
+    console.error('[export] GSheet error:', e.message, e.stack);
+    if (!res.headersSent) res.status(e.status || 500).json({ error: e.message });
+  }
+});
+
+module.exports = router;
