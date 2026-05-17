@@ -7,13 +7,29 @@ const { requireAuth } = require('../middleware/auth');
 const router = express.Router();
 
 // ─────────────────────────────────────────────────────────────
+//  Timeout 包裝：超過 ms 就 reject
+// ─────────────────────────────────────────────────────────────
+function withTimeout(promise, ms, label) {
+  const t = new Promise((_, reject) =>
+    setTimeout(() => reject(new Error(`${label} 超時（${ms / 1000}秒）`)), ms)
+  );
+  return Promise.race([promise, t]);
+}
+
+// ─────────────────────────────────────────────────────────────
 //  共用：取得批次 + 品項資料，組成匯出列
 // ─────────────────────────────────────────────────────────────
 async function getExportData(batchId) {
-  const [batch, items] = await Promise.all([
-    sheets.getBatchById(batchId),
-    sheets.getBatchItems(batchId),
-  ]);
+  console.log(`[export] getExportData start batchId=${batchId}`);
+  const [batch, items] = await withTimeout(
+    Promise.all([
+      sheets.getBatchById(batchId),
+      sheets.getBatchItems(batchId),
+    ]),
+    25000,
+    'getExportData'
+  );
+  console.log(`[export] getExportData done batch=${!!batch} items=${items?.length}`);
   if (!batch) throw Object.assign(new Error('批次不存在'), { status: 404 });
   return { batch, items };
 }
@@ -37,6 +53,7 @@ const HEADERS = [
 //  GET /api/export/:batchId/excel  →  下載 .xlsx
 // ─────────────────────────────────────────────────────────────
 router.get('/:batchId/excel', requireAuth, async (req, res) => {
+  console.log(`[export] Excel request batchId=${req.params.batchId}`);
   try {
     const { batch, items } = await getExportData(req.params.batchId);
 
@@ -122,13 +139,16 @@ router.get('/:batchId/excel', requireAuth, async (req, res) => {
     ws.views = [{ state: 'frozen', ySplit: 4 }];
 
     const filename = `野草盤點_${batch.date}_${batch.status}.xlsx`;
+    console.log(`[export] writing Excel buffer, items=${items.length}`);
+    const buffer = await wb.xlsx.writeBuffer();
     res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
     res.setHeader('Content-Disposition', `attachment; filename*=UTF-8''${encodeURIComponent(filename)}`);
-
-    await wb.xlsx.write(res);
-    res.end();
+    res.setHeader('Content-Length', buffer.length);
+    res.end(buffer);
+    console.log(`[export] Excel done bytes=${buffer.length}`);
   } catch (e) {
-    res.status(e.status || 500).json({ error: e.message });
+    console.error('[export] Excel error:', e.message, e.stack);
+    if (!res.headersSent) res.status(e.status || 500).json({ error: e.message });
   }
 });
 
@@ -136,12 +156,20 @@ router.get('/:batchId/excel', requireAuth, async (req, res) => {
 //  POST /api/export/:batchId/gsheet  →  寫入 Google Sheets 新分頁
 // ─────────────────────────────────────────────────────────────
 router.post('/:batchId/gsheet', requireAuth, async (req, res) => {
+  console.log(`[export] GSheet request batchId=${req.params.batchId}`);
   try {
     const { batch, items } = await getExportData(req.params.batchId);
-    const result = await sheets.exportBatchToNewTab(batch, items);
+    console.log(`[export] writing to GSheet tab...`);
+    const result = await withTimeout(
+      sheets.exportBatchToNewTab(batch, items),
+      25000,
+      'exportBatchToNewTab'
+    );
+    console.log(`[export] GSheet done:`, result.tabTitle);
     res.json(result);
   } catch (e) {
-    res.status(e.status || 500).json({ error: e.message });
+    console.error('[export] GSheet error:', e.message, e.stack);
+    if (!res.headersSent) res.status(e.status || 500).json({ error: e.message });
   }
 });
 
