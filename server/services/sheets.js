@@ -719,7 +719,25 @@ async function exportBatchToNewTab(batch, items) {
   };
 }
 
+
 module.exports = {
   initSheets,
   // 使用者
-  getUsers, getUserByUs
+  getUsers, getUserByUsername, updateUserLastLogin, createUser, updateUser,
+  // 產品
+  getProducts,
+  // 同步
+  syncProducts,
+  // 批次
+  getBatches, getBatchById, createBatch, updateBatchStatus,
+  // 明細
+  getBatchItems, updateBatchItem,
+  // 結案同步
+  writeStockToInventorySheet,
+  // 匯出
+  exportBatchToNewTab,
+  // 儀表板
+  getDashboardStats,
+  // 歷史
+  getHistory,
+};
