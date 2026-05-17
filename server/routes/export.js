@@ -43,6 +43,7 @@ async function getExportData(batchId) {
 }
 
 const HEADERS = [
+  { header: '商品編號',   key: 'productId',   width: 14 },
   { header: '商品名稱',   key: 'productName', width: 20 },
   { header: '類別',       key: 'category',    width: 12 },
   { header: '單位',       key: 'unit',        width: 8  },
@@ -72,14 +73,14 @@ router.get('/:batchId/excel', requireAuth, async (req, res) => {
     const ws = wb.addWorksheet('盤點結果');
 
     // 標題列（合併儲存格）
-    ws.mergeCells('A1:L1');
+    ws.mergeCells('A1:M1');
     const titleCell = ws.getCell('A1');
     titleCell.value  = `野草倉庫盤點結果　批次：${batch.date}　狀態：${batch.status}`;
     titleCell.font   = { bold: true, size: 13 };
     titleCell.alignment = { horizontal: 'center' };
     ws.getRow(1).height = 24;
 
-    ws.mergeCells('A2:L2');
+    ws.mergeCells('A2:M2');
     ws.getCell('A2').value = `建立人：${batch.createdBy}　備注：${batch.notes || '—'}`;
     ws.getCell('A2').font  = { size: 10, color: { argb: 'FF666666' } };
     ws.getRow(2).height = 18;
@@ -103,6 +104,7 @@ router.get('/:batchId/excel', requireAuth, async (req, res) => {
     // 資料列
     items.forEach((item, idx) => {
       const row = ws.addRow([
+        item.productId,
         item.productName,
         item.category,
         item.unit,
@@ -117,8 +119,8 @@ router.get('/:batchId/excel', requireAuth, async (req, res) => {
         item.reviewedAt ? item.reviewedAt.replace('T', ' ').slice(0, 16) : '',
       ]);
 
-      // 差異欄著色
-      const diffCell = row.getCell(6);
+      // 差異欄著色（現在是第 7 欄，因多了商品編號欄）
+      const diffCell = row.getCell(7);
       if (item.diff !== null && item.diff !== undefined) {
         if (item.diff < 0)      diffCell.font = { color: { argb: 'FFE53935' } };
         else if (item.diff > 0) diffCell.font = { color: { argb: 'FF1976D2' } };
@@ -135,7 +137,7 @@ router.get('/:batchId/excel', requireAuth, async (req, res) => {
     // 總計列
     const sumRow = ws.addRow([
       `共 ${items.length} 項`,
-      '', '',
+      '', '', '',
       items.reduce((s, i) => s + (i.bookStock || 0), 0),
       items.filter(i => i.actualStock !== null).reduce((s, i) => s + (i.actualStock || 0), 0),
       items.filter(i => i.diff !== null).reduce((s, i) => s + (i.diff || 0), 0),
@@ -162,23 +164,4 @@ router.get('/:batchId/excel', requireAuth, async (req, res) => {
 
 // ─────────────────────────────────────────────────────────────
 //  POST /api/export/:batchId/gsheet  →  寫入 Google Sheets 新分頁
-// ─────────────────────────────────────────────────────────────
-router.post('/:batchId/gsheet', requireAuth, async (req, res) => {
-  console.log(`[export] GSheet request batchId=${req.params.batchId}`);
-  try {
-    const { batch, items } = await getExportData(req.params.batchId);
-    console.log(`[export] writing to GSheet tab...`);
-    const result = await withTimeout(
-      sheets.exportBatchToNewTab(batch, items),
-      22000,
-      'exportBatchToNewTab'
-    );
-    console.log(`[export] GSheet done:`, result.tabTitle);
-    res.json(result);
-  } catch (e) {
-    console.error('[export] GSheet error:', e.message, e.stack);
-    if (!res.headersSent) res.status(e.status || 500).json({ error: e.message });
-  }
-});
-
-module.exports = router;
+// ────────────────────────────────────────────────────────�
