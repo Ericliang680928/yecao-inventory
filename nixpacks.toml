@@ -1,0 +1,8 @@
+[phases.install]
+cmds = ["npm install --legacy-peer-deps"]
+
+[phases.build]
+cmds = ["npm run build", "cd server && npm install --legacy-peer-deps"]
+
+[start]
+cmd = "node server/index.js"

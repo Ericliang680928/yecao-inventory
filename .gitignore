@@ -22,3 +22,5 @@ npm-debug.log*
 # Temp
 *.tgz
 build_log.txt
+package-lock.json
+server/package-lock.json
