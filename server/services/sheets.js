@@ -666,10 +666,10 @@ async function exportBatchToNewTab(batch, items) {
     sheetGid = addRes.data.replies[0].addSheet.properties.sheetId;
   }
 
-  const headerRow = ['商品名稱','類別','單位','帳面數量','實盤數量','差異','差異原因','備注','盤點人員','盤點時間','覆核人員','覆核時間'];
+  const headerRow = ['商品編號','商品名稱','類別','單位','帳面數量','實盤數量','差異','差異原因','備注','盤點人員','盤點時間','覆核人員','覆核時間'];
   const titleRow  = [`野草盤點結果　批次：${batch.date}　狀態：${batch.status}　建立人：${batch.createdBy}`];
   const dataRows  = items.map(i => [
-    i.productName, i.category, i.unit,
+    i.productId, i.productName, i.category, i.unit,
     i.bookStock, i.actualStock ?? '', i.diff ?? '',
     i.reason || '', i.notes || '', i.counter || '',
     i.countedAt  ? i.countedAt.replace('T',' ').slice(0,16)  : '',
@@ -722,21 +722,4 @@ async function exportBatchToNewTab(batch, items) {
 module.exports = {
   initSheets,
   // 使用者
-  getUsers, getUserByUsername, updateUserLastLogin, createUser, updateUser,
-  // 產品
-  getProducts,
-  // 同步
-  syncProducts,
-  // 批次
-  getBatches, getBatchById, createBatch, updateBatchStatus,
-  // 明細
-  getBatchItems, updateBatchItem,
-  // 結案同步
-  writeStockToInventorySheet,
-  // 匯出
-  exportBatchToNewTab,
-  // 儀表板
-  getDashboardStats,
-  // 歷史
-  getHistory,
-};
+  getUsers, getUserByUs
