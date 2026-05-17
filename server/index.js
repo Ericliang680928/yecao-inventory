@@ -15,6 +15,7 @@ app.use(express.json());
 app.use('/api/auth',     require('./routes/auth'));
 app.use('/api/products', require('./routes/products'));
 app.use('/api/batches',  require('./routes/batches'));
+app.use('/api/export',   require('./routes/export'));
 app.use('/api/sync',     require('./routes/sync'));
 app.use('/api/users',    require('./routes/users'));
 
