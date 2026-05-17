@@ -13,6 +13,7 @@ export interface Product {
   category: string
   active: boolean
   stock: number
+  unit: string
   syncedAt: string
 }
 
@@ -32,6 +33,7 @@ export interface BatchItem {
   productId: string
   productName: string
   category: string
+  unit: string
   bookStock: number
   actualStock: number | null
   diff: number | null

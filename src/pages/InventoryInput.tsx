@@ -61,6 +61,7 @@ function ItemRow({ item, onSave, isLast, nextRef, isClosed }: RowProps) {
         <div className="flex items-center gap-2 mt-0.5">
           <span className="text-xs text-gray-500">{item.productId}</span>
           {item.category && <span className="text-xs bg-gray-100 text-gray-600 px-1.5 py-0.5 rounded">{item.category}</span>}
+          {item.unit && <span className="text-xs bg-blue-50 text-blue-600 px-1.5 py-0.5 rounded">{item.unit}</span>}
         </div>
       </div>
 

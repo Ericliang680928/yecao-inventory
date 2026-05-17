@@ -14,3 +14,146 @@ config 寫入成功
 config 內容驗證: '[core]\n\trepositoryformatversion = 0\n\tfilemode = fa'
 
 [4] git add...
+$ git add .
+warning: in the working copy of '.env', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of '.env.example', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of '.gitignore', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'RAILWAY_ENV.txt', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'README.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'fix_rollup.ps1', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'git_init_py.bat', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'git_setup.ps1', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'git_setup.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'git初始化.bat', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'git初始化2.bat', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'git推送.bat', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'index.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'package-lock.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'package.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'postcss.config.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'railway.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'server/.env.example', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'server/index.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'server/init-only.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'server/middleware/auth.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'server/package-lock.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'server/package.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'server/routes/auth.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'server/routes/batches.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'server/routes/products.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'server/routes/sync.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'server/routes/users.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'server/seed_products.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'server/services/sheets.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'server/初始化並取得試算表ID.bat', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/App.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/api/client.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/components/Layout.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/components/ProtectedRoute.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/components/StatusBadge.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/hooks/useAuth.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/index.css', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/main.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/pages/AdminSync.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/pages/BatchList.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/pages/CategoryCount.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/pages/CreateBatch.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/pages/Dashboard.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/pages/History.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/pages/InventoryInput.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/pages/Login.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/pages/ReviewPage.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/types/index.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'tailwind.config.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'tsconfig.app.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'tsconfig.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'tsconfig.node.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'vite.config.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'vite.config.ts.timestamp-1778952548721-8d2c753ad0535.mjs', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'vite.config.ts.timestamp-1778952608621-01e0b96d233fd.mjs', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'vite.config.ts.timestamp-1778952690253-2fc55f3554835.mjs', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'vite.config.ts.timestamp-1778952727041-3062ec9ad7325.mjs', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'vite.config.ts.timestamp-1778974964798-636d787fa3152.mjs', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of '啟動前端.bat', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of '啟動後端.bat', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of '執行git初始化.bat', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of '寫入範例商品.bat', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of '清理暫存檔.bat', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of '重新build前端.bat', LF will be replaced by CRLF the next time Git touches it
+
+[5] git commit...
+$ git commit -m 初始提交：野草倉庫盤點系統
+[main (root-commit) a368dbe] 初始提交：野草倉庫盤點系統
+ 66 files changed, 7449 insertions(+)
+ create mode 100644 .env
+ create mode 100644 .env.example
+ create mode 100644 .gitignore
+ create mode 100644 RAILWAY_ENV.txt
+ create mode 100644 README.md
+ create mode 100644 fix_rollup.ps1
+ create mode 100644 git_init_py.bat
+ create mode 100644 git_log.txt
+ create mode 100644 git_setup.ps1
+ create mode 100644 git_setup.py
+ create mode 100644 "git\345\210\235\345\247\213\345\214\226.bat"
+ create mode 100644 "git\345\210\235\345\247\213\345\214\2262.bat"
+ create mode 100644 "git\346\216\250\351\200\201.bat"
+ create mode 100644 index.html
+ create mode 100644 package-lock.json
+ create mode 100644 package.json
+ create mode 100644 postcss.config.js
+ create mode 100644 railway.json
+ create mode 100644 server/.env.example
+ create mode 100644 server/index.js
+ create mode 100644 server/init-only.js
+ create mode 100644 server/middleware/auth.js
+ create mode 100644 server/package-lock.json
+ create mode 100644 server/package.json
+ create mode 100644 server/routes/auth.js
+ create mode 100644 server/routes/batches.js
+ create mode 100644 server/routes/products.js
+ create mode 100644 server/routes/sync.js
+ create mode 100644 server/routes/users.js
+ create mode 100644 server/seed_products.js
+ create mode 100644 server/services/sheets.js
+ create mode 100644 "server/\345\210\235\345\247\213\345\214\226\344\270\246\345\217\226\345\276\227\350\251\246\347\256\227\350\241\250ID.bat"
+ create mode 100644 src/App.tsx
+ create mode 100644 src/api/client.ts
+ create mode 100644 src/components/Layout.tsx
+ create mode 100644 src/components/ProtectedRoute.tsx
+ create mode 100644 src/components/StatusBadge.tsx
+ create mode 100644 src/hooks/useAuth.ts
+ create mode 100644 src/index.css
+ create mode 100644 src/main.tsx
+ create mode 100644 src/pages/AdminSync.tsx
+ create mode 100644 src/pages/BatchList.tsx
+ create mode 100644 src/pages/CategoryCount.tsx
+ create mode 100644 src/pages/CreateBatch.tsx
+ create mode 100644 src/pages/Dashboard.tsx
+ create mode 100644 src/pages/History.tsx
+ create mode 100644 src/pages/InventoryInput.tsx
+ create mode 100644 src/pages/Login.tsx
+ create mode 100644 src/pages/ReviewPage.tsx
+ create mode 100644 src/types/index.ts
+ create mode 100644 tailwind.config.js
+ create mode 100644 tsconfig.app.json
+ create mode 100644 tsconfig.json
+ create mode 100644 tsconfig.node.json
+ create mode 100644 vite.config.ts
+ create mode 100644 vite.config.ts.timestamp-1778952548721-8d2c753ad0535.mjs
+ create mode 100644 vite.config.ts.timestamp-1778952608621-01e0b96d233fd.mjs
+ create mode 100644 vite.config.ts.timestamp-1778952690253-2fc55f3554835.mjs
+ create mode 100644 vite.config.ts.timestamp-1778952727041-3062ec9ad7325.mjs
+ create mode 100644 vite.config.ts.timestamp-1778974964798-636d787fa3152.mjs
+ create mode 100644 "\345\225\237\345\213\225\345\211\215\347\253\257.bat"
+ create mode 100644 "\345\225\237\345\213\225\345\276\214\347\253\257.bat"
+ create mode 100644 "\345\237\267\350\241\214git\345\210\235\345\247\213\345\214\226.bat"
+ create mode 100644 "\345\257\253\345\205\245\347\257\204\344\276\213\345\225\206\345\223\201.bat"
+ create mode 100644 "\346\270\205\347\220\206\346\232\253\345\255\230\346\252\224.bat"
+ create mode 100644 "\351\207\215\346\226\260build\345\211\215\347\253\257.bat"
+
+[完成]
+$ git log --oneline -3
+a368dbe 初始提交：野草倉庫盤點系統
+
+=== 全部完成！請查看上面輸出並執行 git推送.bat ===

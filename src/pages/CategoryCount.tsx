@@ -37,7 +37,7 @@ interface CardProps {
 function ProductCard({ item, isClosed, onSave, nextRef }: CardProps) {
   const status = getItemStatus(item)
 
-  // unit 存在 notes 前綴 "unit:xxx"
+  // unit 優先從 item.unit（產品主檔），其次從 notes 前綴 "unit:xxx" 讀取
   const parseUnit = (notes: string) => {
     if (!notes) return ''
     if (notes.startsWith('unit:')) {
@@ -48,7 +48,7 @@ function ProductCard({ item, isClosed, onSave, nextRef }: CardProps) {
   }
 
   const [val,     setVal]   = useState(item.actualStock !== null ? String(item.actualStock) : '')
-  const [unit,    setUnit]  = useState(() => parseUnit(item.notes || ''))
+  const [unit,    setUnit]  = useState(() => item.unit || parseUnit(item.notes || ''))
   const [saving,  setSaving] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -97,7 +97,10 @@ function ProductCard({ item, isClosed, onSave, nextRef }: CardProps) {
       <div className="flex items-start justify-between gap-2 mb-3">
         <div className="flex-1 min-w-0">
           <p className="font-semibold text-gray-800 leading-snug">{item.productName}</p>
-          <p className="text-xs text-gray-400 mt-0.5">{item.productId}</p>
+          <div className="flex items-center gap-2 mt-0.5">
+            <p className="text-xs text-gray-400">{item.productId}</p>
+            {item.unit && <span className="text-xs bg-blue-50 text-blue-600 px-1.5 py-0.5 rounded">{item.unit}</span>}
+          </div>
         </div>
         <span className={`text-xs font-bold px-2 py-1 rounded-full flex-shrink-0 ${statusColor}`}>
           {saving ? '儲存中' : statusLabel}

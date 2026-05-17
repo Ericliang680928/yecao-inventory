@@ -1,0 +1,28 @@
+=== git commit 雙向同步功能 ===
+
+工作目錄: D:\米樂家\野草\盤點系統
+$ git status --short
+M git_log.txt
+ M server/routes/batches.js
+ M server/services/sheets.js
+ M src/pages/CategoryCount.tsx
+ M src/pages/InventoryInput.tsx
+ M src/types/index.ts
+?? git_commit2.py
+?? git_init.sh
+?? git_log2.txt
+?? "\345\237\267\350\241\214git\346\217\220\344\272\244.bat"
+
+變更的檔案:
+M git_log.txt
+ M server/routes/batches.js
+ M server/services/sheets.js
+ M src/pages/CategoryCount.tsx
+ M src/pages/InventoryInput.tsx
+ M src/types/index.ts
+?? git_commit2.py
+?? git_init.sh
+?? git_log2.txt
+?? "\345\237\267\350\241\214git\346\217\220\344\272\244.bat"
+
+[1] git add -A...

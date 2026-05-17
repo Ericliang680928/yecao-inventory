@@ -58,6 +58,18 @@ router.patch('/:id/status', requireAuth, async (req, res) => {
     }
 
     await sheets.updateBatchStatus(req.params.id, status);
+
+    // 結案時將實盤數量同步回「庫存現況」工作表
+    if (status === '已結案') {
+      try {
+        const syncResult = await sheets.writeStockToInventorySheet(req.params.id);
+        return res.json({ ok: true, status, inventorySync: syncResult });
+      } catch (syncErr) {
+        console.error('庫存現況同步失敗（結案已完成）:', syncErr.message);
+        return res.json({ ok: true, status, inventorySync: { error: syncErr.message } });
+      }
+    }
+
     res.json({ ok: true, status });
   } catch (e) { res.status(e.status || 500).json({ error: e.message }); }
 });

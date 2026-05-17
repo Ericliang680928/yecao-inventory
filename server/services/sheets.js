@@ -24,14 +24,14 @@ const SH = {
 // ── 欄位索引（0-based，對應試算表欄）──────────────────────────
 const COL = {
   USERS:    { username:0, password:1, name:2, role:3, active:4, createdAt:5, lastLogin:6 },
-  PRODUCTS: { id:0, name:1, category:2, active:3, stock:4, sourceUpdated:5, syncedAt:6 },
+  PRODUCTS: { id:0, name:1, category:2, active:3, stock:4, sourceUpdated:5, syncedAt:6, unit:7 },
   BATCHES:  { id:0, date:1, createdBy:2, startTime:3, endTime:4, status:5, notes:6 },
   ITEMS:    {
     batchId:0, date:1, productId:2, productName:3, category:4,
     bookStock:5, actualStock:6, diff:7, reason:8, notes:9,
     counter:10, countedAt:11, reviewer:12, reviewedAt:13, version:14
   },
-  INVENTORY:{ productId:0, stock:1, lastCountDate:2, lastUpdated:3 },
+  INVENTORY:{ productId:0, productName:1, category:2, unit:3, stock:4, lastUpdated:5 },
   SYNC_LOG: { batchId:0, syncTime:1, added:2, updated:3, disabled:4, errors:5 },
 };
 
@@ -207,10 +207,10 @@ async function setupHeaders(sheetId) {
   const { sheets } = getApis();
   const data = [
     { sheet: SH.USERS,    hdr: ['帳號','密碼','姓名','角色','啟用','建立時間','最後登入'] },
-    { sheet: SH.PRODUCTS, hdr: ['商品編號','商品名稱','類別','啟用狀態','帳面庫存','來源更新時間','同步時間'] },
+    { sheet: SH.PRODUCTS, hdr: ['商品編號','商品名稱','類別','啟用狀態','帳面庫存','來源更新時間','同步時間','單位'] },
     { sheet: SH.BATCHES,  hdr: ['批次ID','盤點日期','建立人','開始時間','完成時間','狀態','備註'] },
     { sheet: SH.ITEMS,    hdr: ['批次ID','盤點日期','商品編號','商品名稱快照','類別快照','帳面庫存快照','實盤庫存','差異數量','差異原因','備註','盤點人員','盤點時間','覆核人員','覆核時間','版本時間戳'] },
-    { sheet: SH.INVENTORY,hdr: ['商品編號','目前帳面庫存','最近盤點日期','最近異動時間'] },
+    { sheet: SH.INVENTORY,hdr: ['商品編號','商品名稱','類別','單位','帳面庫存','最後更新時間'] },
     { sheet: SH.SYNC_LOG, hdr: ['同步批次ID','同步時間','新增筆數','更新筆數','停用筆數','錯誤訊息'] },
   ].map(({ sheet, hdr }) => ({ range: `${sheet}!A1:Z1`, values: [hdr] }));
 
@@ -316,6 +316,7 @@ async function getProducts(activeOnly = false) {
       category:      r[c.category],
       active:        r[c.active] !== 'N',
       stock:         parseFloat(r[c.stock]) || 0,
+      unit:          r[c.unit] || '',
       sourceUpdated: r[c.sourceUpdated],
       syncedAt:      r[c.syncedAt],
       _rowIndex:     idx,
@@ -337,16 +338,21 @@ async function syncProducts() {
   try {
     const res = await sheets.spreadsheets.values.get({
       spreadsheetId: process.env.SOURCE_SHEET_ID,
-      range:         `${process.env.SOURCE_SHEET_NAME}!A2:C`,
+      range:         `${process.env.SOURCE_SHEET_NAME}!A2:D`,
     });
     sourceRows = res.data.values || [];
   } catch (e) {
     errors = `讀取來源失敗: ${e.message}`;
   }
 
-  // 來源欄位：A=商品編號, B=商品名稱, C=類別
+  // 來源欄位：A=商品編號, B=商品名稱, C=類別, D=單位
   const sourceProducts = sourceRows
-    .map(r => ({ id: String(r[0]||'').trim(), name: String(r[1]||'').trim(), category: String(r[2]||'').trim() }))
+    .map(r => ({
+      id:       String(r[0]||'').trim(),
+      name:     String(r[1]||'').trim(),
+      category: String(r[2]||'').trim(),
+      unit:     String(r[3]||'').trim(),
+    }))
     .filter(p => p.id && p.name);
 
   // 2. 讀現有產品主檔
@@ -364,18 +370,19 @@ async function syncProducts() {
   for (const sp of sourceProducts) {
     if (currentMap[sp.id]) {
       const { r, idx } = currentMap[sp.id];
-      const changed = r[c.name] !== sp.name || r[c.category] !== sp.category;
+      const changed = r[c.name] !== sp.name || r[c.category] !== sp.category || (r[c.unit]||'') !== sp.unit;
       if (changed) {
-        const row = pad([...r], 7);
+        const row = pad([...r], 8);
         row[c.name]          = sp.name;
         row[c.category]      = sp.category;
+        row[c.unit]          = sp.unit;
         row[c.sourceUpdated] = t;
         row[c.syncedAt]      = t;
         batchUp.push({ rowIndex: idx, values: row });
         updated++;
       }
     } else {
-      newRows.push([sp.id, sp.name, sp.category, 'Y', '0', t, t]);
+      newRows.push([sp.id, sp.name, sp.category, 'Y', '0', t, t, sp.unit]);
       added++;
     }
   }
@@ -394,9 +401,9 @@ async function syncProducts() {
   await batchUpdateRows(SH.PRODUCTS, batchUp);
   await appendRows(SH.PRODUCTS, newRows);
 
-  // 新增產品也要加入庫存現況
+  // 新增產品也要加入庫存現況（nr = [id, name, category, 'Y', '0', t, t, unit]）
   for (const nr of newRows) {
-    await upsertInventory(nr[0], 0, '');
+    await upsertInventory(nr[0], nr[1], nr[2], nr[7], 0);
   }
 
   // 4. 同步日誌
@@ -405,13 +412,13 @@ async function syncProducts() {
   return { added, updated, disabled, errors, syncId };
 }
 
-async function upsertInventory(productId, stock, lastCountDate) {
+async function upsertInventory(productId, productName, category, unit, stock) {
   const rows = await getRows(SH.INVENTORY);
   const c = COL.INVENTORY;
   const idx = rows.findIndex(r => r[c.productId] === productId);
   const t = now();
   if (idx === -1) {
-    await appendRow(SH.INVENTORY, [productId, stock, lastCountDate || '', t]);
+    await appendRow(SH.INVENTORY, [productId, productName || '', category || '', unit || '', stock, t]);
   }
 }
 
@@ -473,8 +480,15 @@ async function updateBatchStatus(batchId, status) {
 //  盤點明細
 // ═══════════════════════════════════════════════════════════════
 async function getBatchItems(batchId) {
-  const rows = await getRows(SH.ITEMS);
+  const [rows, products] = await Promise.all([
+    getRows(SH.ITEMS),
+    getProducts(),
+  ]);
   const c = COL.ITEMS;
+  // Build unit lookup from products
+  const unitMap = {};
+  products.forEach(p => { unitMap[p.id] = p.unit || ''; });
+
   return rows
     .filter(r => r[c.batchId] === batchId)
     .map((r, _idx) => {
@@ -486,6 +500,7 @@ async function getBatchItems(batchId) {
         productId:   r[c.productId],
         productName: r[c.productName],
         category:    r[c.category],
+        unit:        unitMap[r[c.productId]] || '',
         bookStock:   book,
         actualStock: actual,
         diff:        actual !== null ? actual - book : null,
@@ -546,6 +561,53 @@ async function updateBatchItem(batchId, productId, data, username) {
 }
 
 // ═══════════════════════════════════════════════════════════════
+//  結案時將實盤數量同步回「庫存現況」工作表
+// ═══════════════════════════════════════════════════════════════
+async function writeStockToInventorySheet(batchId) {
+  const items    = await getBatchItems(batchId);
+  const products = await getProducts();
+  const productMap = {};
+  products.forEach(p => { productMap[p.id] = p; });
+
+  const t = now();
+  const existingRows = await getRows(SH.INVENTORY);
+  const c = COL.INVENTORY;
+
+  // Build index of existing rows
+  const existingMap = {};
+  existingRows.forEach((r, idx) => {
+    if (r[c.productId]) existingMap[r[c.productId]] = idx;
+  });
+
+  const batchUpdates = [];
+  const newRows      = [];
+
+  for (const item of items) {
+    if (item.actualStock === null) continue; // 未盤點的跳過
+    const product = productMap[item.productId] || {};
+    const rowData = [
+      item.productId,
+      item.productName,
+      item.category,
+      product.unit || '',
+      item.actualStock,
+      t,
+    ];
+    if (existingMap[item.productId] !== undefined) {
+      batchUpdates.push({ rowIndex: existingMap[item.productId], values: rowData });
+    } else {
+      newRows.push(rowData);
+    }
+  }
+
+  await batchUpdateRows(SH.INVENTORY, batchUpdates);
+  await appendRows(SH.INVENTORY, newRows);
+
+  console.log(`✅ 庫存現況同步完成：更新 ${batchUpdates.length} 筆，新增 ${newRows.length} 筆`);
+  return { updated: batchUpdates.length, added: newRows.length };
+}
+
+// ═══════════════════════════════════════════════════════════════
 //  儀表板統計
 // ═══════════════════════════════════════════════════════════════
 async function getDashboardStats() {
@@ -588,6 +650,8 @@ module.exports = {
   getBatches, getBatchById, createBatch, updateBatchStatus,
   // 明細
   getBatchItems, updateBatchItem,
+  // 結案同步
+  writeStockToInventorySheet,
   // 儀表板
   getDashboardStats,
   // 歷史
