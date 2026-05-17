@@ -1,4 +1,4 @@
-use strict';
+'use strict';
 const express   = require('express');
 const ExcelJS   = require('exceljs');
 const sheets    = require('../services/sheets');
@@ -72,6 +72,7 @@ router.get('/:batchId/excel', requireAuth, async (req, res) => {
 
     const ws = wb.addWorksheet('盤點結果');
 
+    // 標題列（合併儲存格）
     ws.mergeCells('A1:M1');
     const titleCell = ws.getCell('A1');
     titleCell.value  = `野草倉庫盤點結果　批次：${batch.date}　狀態：${batch.status}`;
@@ -84,7 +85,8 @@ router.get('/:batchId/excel', requireAuth, async (req, res) => {
     ws.getCell('A2').font  = { size: 10, color: { argb: 'FF666666' } };
     ws.getRow(2).height = 18;
 
-    ws.addRow([]);
+    // 表頭
+    ws.addRow([]);          // 空行
     const headerRow = ws.addRow(HEADERS.map(h => h.header));
     headerRow.font      = { bold: true, color: { argb: 'FFFFFFFF' } };
     headerRow.alignment = { horizontal: 'center' };
@@ -96,8 +98,10 @@ router.get('/:batchId/excel', requireAuth, async (req, res) => {
       };
     });
 
+    // 設定欄寬
     HEADERS.forEach((h, i) => { ws.getColumn(i + 1).width = h.width; });
 
+    // 資料列
     items.forEach((item, idx) => {
       const row = ws.addRow([
         item.productId,
@@ -115,12 +119,14 @@ router.get('/:batchId/excel', requireAuth, async (req, res) => {
         item.reviewedAt ? item.reviewedAt.replace('T', ' ').slice(0, 16) : '',
       ]);
 
+      // 差異欄著色（現在是第 7 欄，因多了商品編號欄）
       const diffCell = row.getCell(7);
       if (item.diff !== null && item.diff !== undefined) {
         if (item.diff < 0)      diffCell.font = { color: { argb: 'FFE53935' } };
         else if (item.diff > 0) diffCell.font = { color: { argb: 'FF1976D2' } };
       }
 
+      // 交替底色
       if (idx % 2 === 0) {
         row.eachCell(cell => {
           cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF5FAF6' } };
@@ -128,6 +134,7 @@ router.get('/:batchId/excel', requireAuth, async (req, res) => {
       }
     });
 
+    // 總計列
     const sumRow = ws.addRow([
       `共 ${items.length} 項`,
       '', '', '',
@@ -138,6 +145,7 @@ router.get('/:batchId/excel', requireAuth, async (req, res) => {
     sumRow.font = { bold: true };
     sumRow.getCell(1).alignment = { horizontal: 'left' };
 
+    // 凍結表頭
     ws.views = [{ state: 'frozen', ySplit: 4 }];
 
     const filename = `野草盤點_${batch.date}_${batch.status}.xlsx`;
