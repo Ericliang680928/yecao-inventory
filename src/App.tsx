@@ -12,6 +12,7 @@ import CategoryCount  from './pages/CategoryCount'
 import ReviewPage     from './pages/ReviewPage'
 import History        from './pages/History'
 import AdminSync      from './pages/AdminSync'
+import Users          from './pages/Users'
 
 function App() {
   const auth = useProvideAuth()
@@ -88,6 +89,14 @@ function App() {
             <ProtectedRoute>
               <Layout>
                 <AdminSync />
+              </Layout>
+            </ProtectedRoute>
+          } />
+
+          <Route path="/users" element={
+            <ProtectedRoute>
+              <Layout>
+                <Users />
               </Layout>
             </ProtectedRoute>
           } />

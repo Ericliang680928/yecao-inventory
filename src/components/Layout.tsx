@@ -61,6 +61,18 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         ))}
         {isAdmin && (
           <Link
+            to="/users"
+            className={`flex-1 flex flex-col items-center py-3 gap-1 text-xs font-medium transition-colors touch-manipulation
+              ${location.pathname.startsWith('/users')
+                ? 'text-primary-600 bg-primary-50'
+                : 'text-gray-500 hover:text-gray-700'}`}
+          >
+            <span className="text-xl">👥</span>
+            人員
+          </Link>
+        )}
+        {isAdmin && (
+          <Link
             to="/admin"
             className={`flex-1 flex flex-col items-center py-3 gap-1 text-xs font-medium transition-colors touch-manipulation
               ${location.pathname.startsWith('/admin')
